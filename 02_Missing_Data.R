@@ -17,11 +17,6 @@ plot(df$Minute_of_Day, df$Inferred_Glucose, type = 'b')
 # find missing minutes
 missing_minutes <- df[which(is.na(df$Inferred_Glucose)), 'Minute_of_Day']
 
-##### Nearest Neighbor  ###############################################
-Knn_impute_df <- kNN(data = df, variable = 'Inferred_Glucose', k = 4)
-df['Glucose_KNN'] <- Knn_impute_df$Inferred_Glucose
-plot(df$Minute_of_Day, df$Glucose_KNN, type = 'b')
-
 ##### Last-Observed Carry Forward (LOCF)  ###############################################
 df['Glucose_LOCF'] <- na_locf(df$Inferred_Glucose)
 plot(df$Minute_of_Day, df$Glucose_LOCF, type = 'b')
@@ -30,12 +25,18 @@ plot(df$Minute_of_Day, df$Glucose_LOCF, type = 'b')
 df['Glucose_Mean'] <- na_mean(df$Inferred_Glucose)
 plot(df$Minute_of_Day, df$Glucose_Mean, type = 'b')
 
+##### Nearest Neighbor  ###############################################
+library(pracma)
+df['Glucose_nearest_neighbor'] <- interp1(df$Minute_of_Day, df$Inferred_Glucose, method = 'nearest')
+plot(df$Minute_of_Day, df$Glucose_nearest_neighbor, type = 'b')
+
 ##### Linear Interpolation ###############################################
 df['Glucose_LI'] <- na_interpolation(df$Inferred_Glucose,
                                       option = 'linear')
 plot(df$Minute_of_Day, df$Glucose_LI, type = 'b')
 
 ##### Polinomial Interpolation ###############################################
+library(spatialEco)
 df['Glucose_PI'] <- na_interpolation(df$Inferred_Glucose,
                                       option = 'stine')
 plot(df$Minute_of_Day, df$Glucose_PI, type = 'b')
@@ -59,3 +60,6 @@ plot(df$Minute_of_Day, df$Glucose_Kalman_Arima, type = 'b')
 df['Glucose_Moving_Average'] <- na_ma(df$Inferred_Glucose, k = 4)
 plot(df$Minute_of_Day, df$Glucose_Moving_Average, type = 'b')
                                           
+##### KNN imputation  ###############################################
+df['Glucose_knn'] <- VIM::kNN(df, variable = "Inferred_Glucose", k = 5)$Inferred_Glucose
+plot(df$Minute_of_Day, df$Glucose_knn, type = 'b')

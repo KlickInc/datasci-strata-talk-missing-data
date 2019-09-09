@@ -69,7 +69,6 @@ df$Minute_of_Day <- as.numeric(df$Minute_of_Day)
 # sort by minute of day
 df <- df[with(df, order(df$Minute_of_Day)), ]
 
-# save new df
 # save glucose series
 write.xlsx(df, "glucose.xlsx")
 
