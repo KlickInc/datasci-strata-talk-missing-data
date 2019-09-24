@@ -15,3 +15,9 @@ A basic understanding of statistics, load, and how to manipulate data in R or Py
 
 ## What you'll learn
 Understand the variety of methods available to impute missing data and a sense of how to apply them effectively
+
+# Contact Us
+
+Alf Whitehead <awhitehead@klick.com>
+Clare Jeon <cjeon@klick.com>
+
